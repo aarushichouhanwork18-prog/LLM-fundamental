@@ -1,0 +1,296 @@
+# from google import genai
+# from dotenv import load_dotenv
+# import os
+
+# load_dotenv()
+
+# api_key = os.getenv("GEMINI_API_KEY")
+
+# client = genai.Client(api_key=api_key)
+
+# response = client.models.generate_content(
+#     model="gemini-3.6-flash",
+#     contents="What is semiconductors?"
+# )
+
+# print(response.text)
+
+
+
+#MULTI-TURN CONVERSATION
+# from google import genai
+# from dotenv import load_dotenv
+# import os
+
+# load_dotenv()
+
+# api_key = os.getenv("GEMINI_API_KEY")
+
+# client = genai.Client(api_key=api_key)
+
+# chat = client.chats.create(
+#     model="gemini-3.6-flash"
+# )
+
+# response = chat.send_message("My name is Aarushi.")
+# print("AI:", response.text)
+
+# response = chat.send_message("What is my name?")
+# print("AI:", response.text)
+
+# response = chat.send_message("My favorite color is blue.")
+# print("AI:", response.text)
+
+# response = chat.send_message("My favorite food is dosa.")
+# print("AI:", response.text)
+
+# response = chat.send_message("What is my favorite color and food?")
+# print("AI:", response.text)
+
+# response = chat.send_message("i like rava dosa")
+# print("AI:", response.text)
+
+#STRUCTURED OUTPUT
+# from google import genai
+# from google.genai import types
+# from dotenv import load_dotenv
+# from pydantic import BaseModel
+# import os
+# import json
+
+# load_dotenv()
+
+# api_key = os.getenv("GEMINI_API_KEY")
+
+# client = genai.Client(api_key=api_key)
+
+
+# class Person(BaseModel):
+#     name: str
+#     age: int
+#     city: str
+#     profession: str
+
+
+# response = client.models.generate_content(
+#     model="gemini-3.6-flash",
+#     contents="""
+#     My name is Aarushi. I am 22 years old.
+#     I live in Indore and I work as an AI/ML Engineer.
+#     """,
+#     config=types.GenerateContentConfig(
+#         response_mime_type="application/json",
+#         response_schema=Person,
+#     ),
+# )
+
+# data = json.loads(response.text)
+
+# print(json.dumps(data, indent=4))
+
+#WITH PROMPT 
+# from google import genai
+# from google.genai import types
+# from dotenv import load_dotenv
+# from pydantic import BaseModel
+# import os
+# import json
+
+# load_dotenv()
+
+# api_key = os.getenv("GEMINI_API_KEY")
+
+# client = genai.Client(api_key=api_key)
+
+
+# class Employee(BaseModel):
+#     name: str
+#     company: str
+#     role: str
+#     experience: int
+#     department: str
+#     project: str
+
+
+# response = client.models.generate_content(
+#     model="gemini-3.6-flash",
+
+#     contents="""
+#     Extract the employee information from the following text:
+
+#     "Aarushi Chouhan joined the company Batchmaster as an AI/ML Engineer.
+#     She has 1 year of experience and works in the Technology department.
+#     Her current project is related to Generative AI."
+#     """,
+
+#     config=types.GenerateContentConfig(
+#         response_mime_type="application/json",
+#         response_schema=Employee,
+#     ),
+# )
+
+# data = json.loads(response.text)
+
+# print(json.dumps(data, indent=4))
+
+
+
+#ASKING QUESTIONS ABOUT EXTRACTED INFORMATION
+
+# from google import genai
+# from google.genai import types
+# from dotenv import load_dotenv
+# from pydantic import BaseModel
+# import os
+# import json
+
+# load_dotenv()
+
+# api_key = os.getenv("GEMINI_API_KEY")
+
+# client = genai.Client(api_key=api_key)
+
+
+# # Define the structure we want from Gemini
+# class Employee(BaseModel):
+#     name: str
+#     company: str
+#     role: str
+#     experience: int
+#     department: str
+#     project: str
+
+
+# # Step 1: Extract information into structured output
+# response = client.models.generate_content(
+#     model="gemini-3.6-flash",
+
+#     contents="""
+#     Extract the employee information from the following text:
+
+#     "Aarushi Chouhan joined the company Batchmaster as an AI/ML Engineer.
+#     She has 1 year of experience and works in the Technology department.
+#     Her current project is related to Generative AI."
+#     """,
+
+#     config=types.GenerateContentConfig(
+#         response_mime_type="application/json",
+#         response_schema=Employee,
+#     ),
+# )
+
+
+# # Convert Gemini's JSON response into a Python dictionary
+# data = json.loads(response.text)
+
+# print("Employee Information:")
+# print(json.dumps(data, indent=4))
+
+
+# # Step 2: Ask questions about the extracted information
+# question = input("\nAsk something about the employee: ")
+
+# response2 = client.models.generate_content(
+#     model="gemini-3.6-flash",
+
+#     contents=f"""
+#     Here is the employee information:
+
+#     {json.dumps(data, indent=4)}
+
+#     Answer the user's question using only the information provided above.
+
+#     User question:
+#     {question}
+#     """
+# )
+
+# print("\nAI:", response2.text)
+
+
+
+
+#2 WAY CONVERSATION (AI-YOU, AI-YOU)
+
+from google import genai
+from google.genai import types
+from dotenv import load_dotenv
+from pydantic import BaseModel
+import os
+import json
+
+load_dotenv()
+
+api_key = os.getenv("GEMINI_API_KEY")
+
+client = genai.Client(api_key=api_key)
+
+
+# Define the structure
+class Employee(BaseModel):
+    name: str
+    company: str
+    role: str
+    experience: int
+    department: str
+    project: str
+
+
+# Step 1: Extract employee information
+response = client.models.generate_content(
+    model="gemini-3.6-flash",
+
+    contents="""
+    Extract the employee information from the following text:
+
+    "Aarushi Chouhan joined the company Batchmaster as an AI/ML Engineer.
+    She has 1 year of experience and works in the Technology department.
+    Her current project is related to Generative AI."
+    """,
+
+    config=types.GenerateContentConfig(
+        response_mime_type="application/json",
+        response_schema=Employee,
+    ),
+)
+
+
+# Step 2: Convert JSON response into Python data
+data = json.loads(response.text)
+
+print("\nEmployee Information:")
+print(json.dumps(data, indent=4))
+
+
+# Step 3: Create a chat session
+chat = client.chats.create(
+    model="gemini-3.6-flash"
+)
+
+
+# Step 4: Keep asking questions
+while True:
+
+    question = input("\nYou: ")
+
+    # Stop the conversation
+    if question.lower() == "exit":
+        print("Chat ended.")
+        break
+
+    # Send employee information + question to Gemini
+    response = chat.send_message(
+        f"""
+        Here is the employee information:
+
+        {json.dumps(data, indent=4)}
+
+        Answer the user's question using only the employee information
+        provided above.
+
+        User question:
+        {question}
+        """
+    )
+
+    print("AI:", response.text)
