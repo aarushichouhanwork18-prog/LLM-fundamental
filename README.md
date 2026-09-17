@@ -16,66 +16,61 @@ LLM Fundamental/
 │
 ├── .env
 │   └── Stores the Gemini API key
+|-- .gitignore - .env
+                 venv/
 │
 └── llm_basics.py
     └── LLM learning and experimentation code
 
 1. venv/
-
 venv is the Python virtual environment created specifically for this
 project.
-
 It keeps the project's Python packages isolated from the system-wide
 Python installation.
 
 2. .env
-
 The .env file is used to store sensitive configuration values such as
 the Gemini API key.
-
 Example:
-
 GEMINI_API_KEY=your_api_key_here
-
 Important: Never upload your actual API key to GitHub.
 Add .env to .gitignore.
 
-3. llm_basics.py
+3. .gitignore
+    inside this we need to write .env
+                                 venv/
 
+4. llm_basics.py
 This is the main learning file of the project.
-
 Different LLM concepts and experiments are being implemented and practiced
 in this file.
+-llm callin
+- structured output
+- multiturn conversation
+- q/a from given content
+- 2 way communication (ai-you , ai-you)
+
+
 
 ⚙️ Project Setup
 1. Check Python Installation
-
 Make sure Python is installed:
-
 python --version
-
 Example:
-
 Python 3.x.x
+
 2. Create the Project Folder
-
 Create a folder for the project:
-
 LLM Fundamental
-
 Open the folder in VS Code.
-
 🐍 Creating a Virtual Environment
-
 A virtual environment provides an isolated Python environment for the
 project.
 
 Create it using:
-
 python -m venv venv
 
 This creates a folder named:
-
 venv/
 
 The packages installed inside this environment are isolated from the
@@ -85,17 +80,13 @@ global Python installation.
 Windows PowerShell
 
 Activate the environment using:
-
 venv\Scripts\activate
 
 After successful activation, the terminal will show:
-
 (venv)
-
 before the current directory.
 
 Example:
-
 (venv) PS C:\Users\Admin\Desktop\llm-fundamental>
 
 This indicates that the virtual environment is active.
@@ -106,11 +97,9 @@ If PowerShell displays an error saying that script execution is disabled,
 the activation script may be blocked by the execution policy.
 
 Run:
-
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 Then activate the environment again:
-
 venv\Scripts\activate
 Temporary Alternative
 
@@ -125,43 +114,34 @@ venv\Scripts\activate
 The Process scope applies only to the current PowerShell session.
 
 📦 Installing Required Packages
-
 The project uses the Google Gemini Python SDK.
 
 Install it using:
-
 pip install google-genai
 
 Install python-dotenv for loading environment variables:
-
 pip install python-dotenv
 
 Install Pydantic for defining structured output schemas:
-
 pip install pydantic
 
 You can also install everything together:
-
 pip install google-genai python-dotenv pydantic
+
 🔐 Setting Up the API Key
 
 Create a file named:
-
 .env
 
 inside the project folder.
-
 Add your Gemini API key:
-
 GEMINI_API_KEY=your_api_key_here
 
 The API key is loaded in Python using:
 
 from dotenv import load_dotenv
 import os
-
 load_dotenv()
-
 api_key = os.getenv("GEMINI_API_KEY")
 
 The Gemini client is then created using:
